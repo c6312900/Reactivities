@@ -1,11 +1,9 @@
 import { observer } from 'mobx-react-lite';
-import { useEffect } from 'react';
 import { Grid } from 'semantic-ui-react';
-import LoadingComponent from '../../../app/layout/LoadingComponent';
 import { useStore } from '../../../app/stores/store';
+import ActivityDetails from '../details/ActivityDetails';
+import ActivityForm from '../form/ActivityForm';
 import  ActivityList  from './ActivityList';
-// import ActivityDetails from '../details/ActivityDetails';
-// import ActivityForm from '../form/ActivityForm';
 // import { Activity } from '../../../app/models/Activity';
 
 
@@ -26,15 +24,7 @@ import  ActivityList  from './ActivityList';
 //     selectActivity,cancelSelectActivity,editMode,openForm,closeForm,createOrEdit,submitting}: Props) {
 export default observer(function ActivityDashboard() {
     const {activityStore} = useStore();
-    const {loadActivities, activityRegistery} = activityStore;
-    // const {selectedActivity,editMode} = activityStore
-
-    useEffect(() =>{
-      if (activityRegistery.size <= 1)  loadActivities();
-      },[activityRegistery.size,loadActivities])
-
-    if (activityStore.loadingInitial) return <LoadingComponent content='loading app' /> 
-
+    const {selectedActivity,editMode} = activityStore
     return (
           <Grid>
               <Grid.Column width='10'>
@@ -46,15 +36,14 @@ export default observer(function ActivityDashboard() {
                 ))}
               </List> */}
                <ActivityList // activities={activities} 
-                            //  selectActivity={selectActivity} 
+                            //   selectActivity={selectActivity} 
                             //  deleteActivity={deleteActivity}  
                             //  submitting={submitting}
                             />              
               </Grid.Column>
 
               <Grid.Column width='6'>
-                <h2>Activity filter</h2>
-                  {/* { selectedActivity &&  !editMode &&
+                  { selectedActivity &&  !editMode &&
                   <ActivityDetails 
                     //    activity={selectedActivity} 
                     //    cancelSelectActivity={cancelSelectActivity}
@@ -66,7 +55,7 @@ export default observer(function ActivityDashboard() {
                                 // closeForm={closeForm} 
                                 // activity={selectedActivity} 
                                // createOrEdit={createOrEdit} 
-                                />  }                              */}
+                                />  }                             
               </Grid.Column>
           </Grid>
     )

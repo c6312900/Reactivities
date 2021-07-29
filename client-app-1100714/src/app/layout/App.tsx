@@ -1,14 +1,10 @@
+import React, { useEffect } from 'react';
 import { Container } from 'semantic-ui-react';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
+import LoadingComponent from './LoadingComponent';
+import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
-import { Route, useLocation } from 'react-router-dom';
-import HomePage from '../../features/home/HomePage';
-import ActivityForm from '../../features/activities/form/ActivityForm';
-import ActivityDetails from '../../features/activities/details/ActivityDetails';
-// import React, { useEffect } from 'react';
-// import LoadingComponent from './LoadingComponent';
-// import { useStore } from '../stores/store';
 // import { Activity } from '../models/Activity';
 // import {v4 as uuid} from 'uuid';
 // import agent from '../api/agent';
@@ -16,7 +12,7 @@ import ActivityDetails from '../../features/activities/details/ActivityDetails';
 
 
 function App() {
-  //const {activityStore} = useStore(); 
+  const {activityStore} = useStore(); 
   //const [activities, setActivities] = useState<Activity[]>([]); 
   // const [selectedActivity, setSelectedActivity] = useState<Activity | undefined>(undefined);
   // const [editMode,setEditMode] = useState(false)
@@ -37,9 +33,9 @@ function App() {
 
 
 
-  // useEffect(() =>{
-  //   activityStore.loadActivities();
-  //   },[activityStore])
+  useEffect(() =>{
+    activityStore.loadActivities();
+    },[activityStore])
 
   // useEffect(() =>{
   //     // axios.get<Activity[]>('http://localhost:5000/api/activities').then(response =>{
@@ -122,28 +118,16 @@ function App() {
   //   })    
   // }
 
-  // if (activityStore.loadingInitial) return <LoadingComponent content='loading app' />
-  const location = useLocation();
+  if (activityStore.loadingInitial) return <LoadingComponent content='loading app' />
+
   return (
     <>
       {/* <Header as='h2' icon='users' content='Reactivities' /> */}
        
       {/* <NavBar openForm= {handleFormOpen}/> */}
-      <Route exact path='/' component={HomePage} />
-      <Route
-       path= {'/(.+)'} 
-       render= {() => (
-         <>
-          <NavBar />
-          <Container style={{marginTop: '7em'}}>        
-            <Route exact path='/activities' component={ActivityDashboard} />
-            <Route path='/activities/:id' component={ActivityDetails} />
-            <Route key={location.key} path={['/createActivity','/manage/:id' ]} component={ActivityForm} />
-          </Container>
-         </>
-       )}
-      />     
-        {/* <ActivityDashboard 
+      <NavBar />
+      <Container style={{marginTop: '7em'}}>
+        <ActivityDashboard 
         // activities={activityStore.activities} 
         // selectedActivity = {selectedActivity}
         // selectActivity = {handleSelectActivity}
@@ -154,7 +138,8 @@ function App() {
         // createOrEdit = {handleCreateOrEditActivity}
        // deleteActivity = {handleDeleteActivity}
        // submitting = {submitting}
-        /> */}  
+        />
+      </Container>
     </>
   );
 }
